@@ -1,0 +1,19 @@
+# Overrides for production
+app:
+  debug: false
+
+guardrails:
+  input_validation: true
+  output_validation: true
+  prompt_injection_detection: true
+  pii_detection: true
+  secrets_detection: true
+  toxicity_detection: true
+  hallucination_check: true
+  citation_validation: true
+
+security:
+  rate_limit_per_minute: 120
+
+observability:
+  tracing_enabled: true

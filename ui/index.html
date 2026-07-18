@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise Vision RAG</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="layout">
+
+  <header class="topbar">
+    <h1>Enterprise Vision RAG</h1>
+    <span class="status" id="status-indicator">checking backend...</span>
+  </header>
+
+  <main class="content">
+
+    <section class="panel">
+      <h2>Upload a document</h2>
+      <p class="hint">PDF, DOCX, PPTX, XLSX, Markdown or HTML. It will be parsed, chunked and indexed.</p>
+      <form id="upload-form">
+        <input type="file" id="file-input" name="file" required>
+        <button type="submit">Upload and index</button>
+      </form>
+      <div id="upload-result"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Search documents</h2>
+      <form id="search-form">
+        <input type="text" id="search-input" placeholder="Search indexed documents" required>
+        <button type="submit">Search</button>
+      </form>
+      <div id="search-results"></div>
+    </section>
+
+    <section class="panel chat-panel">
+      <h2>Ask a question</h2>
+      <div id="chat-window"></div>
+      <form id="chat-form">
+        <input type="text" id="chat-input" placeholder="Ask something about your documents" required>
+        <button type="submit">Send</button>
+      </form>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <span>Enterprise Vision RAG Platform</span>
+  </footer>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

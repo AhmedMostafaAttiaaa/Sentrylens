@@ -1,0 +1,10 @@
+# Overrides for local development
+app:
+  debug: true
+
+guardrails:
+  prompt_injection_detection: true
+  toxicity_detection: false   # keep local dev fast; enable for staging/prod
+
+observability:
+  tracing_enabled: false

@@ -1,0 +1,6 @@
+# Overrides for staging
+app:
+  debug: false
+
+observability:
+  tracing_enabled: true
