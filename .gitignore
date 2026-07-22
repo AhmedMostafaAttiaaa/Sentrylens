@@ -16,3 +16,7 @@ storage/
 node_modules/
 qdrant_storage/
 postgres_data/
+.idea/
+.vscode/
+.coverage
+htmlcov/
