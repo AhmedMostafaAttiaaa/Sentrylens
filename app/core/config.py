@@ -86,10 +86,17 @@ class GroqConfig(BaseModel):
     model: str = "llama-3.3-70b-versatile"
 
 
+class GeminiConfig(BaseModel):
+    base_url: str = "https://generativelanguage.googleapis.com/v1beta"
+    api_key: str = ""
+    model: str = "gemini-2.0-flash"
+
+
 class LLMConfig(BaseModel):
     router: RouterConfig
     ollama: OllamaLLMConfig
     groq: GroqConfig
+    gemini: GeminiConfig = Field(default_factory=GeminiConfig)
 
 
 class OllamaEmbeddingConfig(BaseModel):
