@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from app.chunking.interfaces import ChunkingStrategy
 from app.chunking.parent_child import ParentChildChunkingStrategy
 from app.chunking.recursive import RecursiveChunkingStrategy
 from app.chunking.sentence_window import SentenceWindowChunkingStrategy

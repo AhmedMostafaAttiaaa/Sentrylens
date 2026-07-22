@@ -14,7 +14,7 @@ from functools import lru_cache
 from qdrant_client import AsyncQdrantClient
 from redis.asyncio import Redis, from_url as redis_from_url
 
-from app.core.config import Settings, get_settings
+from app.core.config import get_settings
 from app.embeddings.ollama_embeddings import OllamaEmbeddingProvider
 from app.embeddings.interfaces import EmbeddingProvider
 from app.guardrails.pipeline import GuardrailsPipeline
