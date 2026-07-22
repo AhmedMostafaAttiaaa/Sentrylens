@@ -9,6 +9,8 @@ _PATTERNS = {
     "generic_api_key": re.compile(r"(?i)(api[_-]?key|secret|token)\s*[:=]\s*['\"]?[A-Za-z0-9_\-]{16,}"),
     "private_key_block": re.compile(r"-----BEGIN (RSA |EC )?PRIVATE KEY-----"),
     "slack_token": re.compile(r"xox[baprs]-[A-Za-z0-9-]{10,}"),
+    "github_token": re.compile(r"gh[pousr]_[A-Za-z0-9]{36,}"),
+    "google_api_key": re.compile(r"AIza[0-9A-Za-z_\-]{35}"),
 }
 
 
