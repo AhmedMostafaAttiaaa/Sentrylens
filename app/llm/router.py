@@ -16,6 +16,7 @@ import structlog
 from tenacity import AsyncRetrying, retry_if_exception_type, stop_after_attempt, wait_exponential
 
 from app.core.config import Settings
+from app.llm.gemini_provider import GeminiProvider
 from app.llm.groq_provider import GroqProvider
 from app.llm.interfaces import LLMProvider
 from app.llm.ollama_provider import OllamaProvider
@@ -35,13 +36,26 @@ class LLMRouter:
             default_model=settings.llm.ollama.models.get("default", "qwen3:8b"),
             timeout_seconds=settings.llm.router.request_timeout_seconds,
         )
-        self._fallback: LLMProvider = GroqProvider(
+        self._fallback: LLMProvider = self._build_fallback(settings)
+        self._health_cache: dict[str, tuple[bool, float]] = {}
+
+    @staticmethod
+    def _build_fallback(settings: Settings) -> LLMProvider:
+        """Build the fallback provider named by settings.llm.router.fallback_provider
+        (defaults to "groq"; set to "gemini" to test against Google's API instead)."""
+        if settings.llm.router.fallback_provider == "gemini":
+            return GeminiProvider(
+                base_url=settings.llm.gemini.base_url,
+                api_key=settings.llm.gemini.api_key,
+                default_model=settings.llm.gemini.model,
+                timeout_seconds=settings.llm.router.request_timeout_seconds,
+            )
+        return GroqProvider(
             base_url=settings.llm.groq.base_url,
             api_key=settings.llm.groq.api_key,
             default_model=settings.llm.groq.model,
             timeout_seconds=settings.llm.router.request_timeout_seconds,
         )
-        self._health_cache: dict[str, tuple[bool, float]] = {}
 
     def model_alias(self, alias: str) -> str | None:
         return self._settings.llm.ollama.models.get(alias)
