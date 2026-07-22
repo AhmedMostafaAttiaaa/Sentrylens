@@ -12,3 +12,9 @@ router = APIRouter(tags=["health"])
 async def health_check() -> HealthStatus:
     settings = get_settings()
     return HealthStatus(status="ok", version=settings.app.version, environment=settings.environment)
+
+
+@router.get("/health/live")
+async def liveness_check() -> dict[str, str]:
+    """Dependency-free liveness probe for orchestrators (e.g. Kubernetes)."""
+    return {"status": "ok"}
