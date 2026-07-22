@@ -26,6 +26,10 @@ llm:
     base_url: "${GROQ_BASE_URL}"
     api_key: "${GROQ_API_KEY}"
     model: "llama-3.3-70b-versatile"
+  gemini:
+    base_url: "${GEMINI_BASE_URL}"
+    api_key: "${GEMINI_API_KEY}"
+    model: "gemini-2.0-flash"
 
 embeddings:
   provider: ollama
