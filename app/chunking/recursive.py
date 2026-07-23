@@ -17,7 +17,7 @@ from app.schemas.documents import Chunk, DocumentMetadata
 _SEPARATORS = ["\n\n", "\n", ". ", " "]
 
 
-def _split_text(text: str, chunk_size: int, overlap: int, separators: list[str]) -> list[str]:
+def _split_raw(text: str, chunk_size: int, overlap: int, separators: list[str]) -> list[str]:
     if len(text) <= chunk_size:
         return [text]
 
@@ -37,12 +37,18 @@ def _split_text(text: str, chunk_size: int, overlap: int, separators: list[str])
             if current:
                 chunks.append(current)
             if len(piece) > chunk_size:
-                chunks.extend(_split_text(piece, chunk_size, overlap, remaining_separators))
+                chunks.extend(_split_raw(piece, chunk_size, overlap, remaining_separators))
                 current = ""
             else:
                 current = piece
     if current:
         chunks.append(current)
+
+    return chunks
+
+
+def _split_text(text: str, chunk_size: int, overlap: int, separators: list[str]) -> list[str]:
+    chunks = _split_raw(text, chunk_size, overlap, separators)
 
     if overlap > 0 and len(chunks) > 1:
         overlapped = [chunks[0]]
