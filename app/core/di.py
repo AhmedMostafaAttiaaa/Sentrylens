@@ -87,16 +87,20 @@ def get_guardrails_pipeline() -> GuardrailsPipeline:
 
 @lru_cache
 def get_skill_registry() -> SkillRegistry:
+    from app.mcp.skills.calculator import CalculatorSkill
+    from app.mcp.skills.metadata_inspector import MetadataInspectorSkill
     from app.mcp.skills.search_documents import SearchDocumentsSkill
     from app.mcp.skills.summarize import SummarizeSkill
+    from app.mcp.skills.text_analyzer import TextAnalyzerSkill
     from app.mcp.skills.translate import TranslateSkill
-    from app.mcp.skills.calculator import CalculatorSkill
 
     registry = SkillRegistry()
     registry.register(SearchDocumentsSkill(get_retriever()))
     registry.register(SummarizeSkill(get_llm_router()))
     registry.register(TranslateSkill(get_llm_router()))
     registry.register(CalculatorSkill())
+    registry.register(TextAnalyzerSkill())
+    registry.register(MetadataInspectorSkill())
     return registry
 
 
