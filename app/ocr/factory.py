@@ -30,4 +30,12 @@ def build_ocr_provider(settings: Settings) -> OCRProvider:
         except Exception as exc:  # noqa: BLE001
             logger.warning("paddle_ocr_unavailable_falling_back", error=str(exc))
 
+    if provider_name == "easyocr":
+        try:
+            from app.ocr.easy_ocr import EasyOCRProvider
+
+            return EasyOCRProvider()
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("easyocr_unavailable_falling_back", error=str(exc))
+
     return TesseractOCRProvider()
