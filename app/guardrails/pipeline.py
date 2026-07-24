@@ -23,6 +23,7 @@ from app.guardrails.output_validation import flag_possible_hallucination, valida
 from app.guardrails.pii_detector import detect_pii, redact_pii
 from app.guardrails.prompt_injection import scan_retrieved_context, scan_user_prompt
 from app.guardrails.secrets_detector import detect_secrets
+from app.guardrails.toxicity_detector import detect_toxicity
 
 
 @dataclass
@@ -53,6 +54,12 @@ class GuardrailsPipeline:
         if self._settings.pii_detection:
             pii_found = detect_pii(text)
             flags.extend(f"pii:{kind}" for kind in pii_found)
+
+        if self._settings.toxicity_detection:
+            toxicity_found = detect_toxicity(text)
+            if toxicity_found:
+                flags.extend(f"toxicity:{kind}" for kind in toxicity_found)
+                blocked = True
 
         if self._settings.secrets_detection:
             secrets_found = detect_secrets(text)
