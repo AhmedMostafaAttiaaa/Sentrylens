@@ -48,4 +48,15 @@ def build_ocr_provider(settings: Settings) -> OCRProvider:
         except Exception as exc:  # noqa: BLE001
             logger.warning("google_vision_ocr_unavailable_falling_back", error=str(exc))
 
+    if provider_name == "azure_vision":
+        try:
+            from app.ocr.azure_vision_ocr import AzureVisionOCRProvider
+
+            return AzureVisionOCRProvider(
+                endpoint=os.environ.get("AZURE_VISION_ENDPOINT", ""),
+                api_key=os.environ.get("AZURE_VISION_KEY", ""),
+            )
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("azure_vision_ocr_unavailable_falling_back", error=str(exc))
+
     return TesseractOCRProvider()
