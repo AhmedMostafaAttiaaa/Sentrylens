@@ -21,6 +21,7 @@ from app.core.config import Settings
 from app.guardrails.input_validation import validate_input
 from app.guardrails.output_validation import flag_possible_hallucination, validate_citations
 from app.guardrails.pii_detector import detect_pii, redact_pii
+from app.guardrails.repetition_detector import detect_excessive_repetition
 from app.guardrails.prompt_injection import scan_retrieved_context, scan_user_prompt
 from app.guardrails.secrets_detector import detect_secrets
 from app.guardrails.toxicity_detector import detect_toxicity
@@ -45,6 +46,10 @@ class GuardrailsPipeline:
         if self._settings.input_validation:
             flags.extend(validate_input(text, self._settings.max_input_chars))
             if "input_too_long" in flags or "null_byte_detected" in flags:
+                blocked = True
+
+            if detect_excessive_repetition(text):
+                flags.append("excessive_repetition_detected")
                 blocked = True
 
         if self._settings.prompt_injection_detection:
