@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import os
+
 import structlog
 
 from app.core.config import Settings
@@ -37,5 +39,13 @@ def build_ocr_provider(settings: Settings) -> OCRProvider:
             return EasyOCRProvider()
         except Exception as exc:  # noqa: BLE001
             logger.warning("easyocr_unavailable_falling_back", error=str(exc))
+
+    if provider_name == "google_vision":
+        try:
+            from app.ocr.google_vision_ocr import GoogleVisionOCRProvider
+
+            return GoogleVisionOCRProvider(api_key=os.environ.get("GOOGLE_VISION_API_KEY", ""))
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("google_vision_ocr_unavailable_falling_back", error=str(exc))
 
     return TesseractOCRProvider()
