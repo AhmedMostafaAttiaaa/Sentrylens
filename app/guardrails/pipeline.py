@@ -24,6 +24,7 @@ from app.guardrails.pii_detector import detect_pii, redact_pii
 from app.guardrails.prompt_injection import scan_retrieved_context, scan_user_prompt
 from app.guardrails.secrets_detector import detect_secrets
 from app.guardrails.toxicity_detector import detect_toxicity
+from app.guardrails.url_safety import scan_for_suspicious_urls
 
 
 @dataclass
@@ -50,6 +51,9 @@ class GuardrailsPipeline:
             injections = scan_user_prompt(text)
             if injections:
                 flags.append("prompt_injection_detected")
+
+            suspicious_urls = scan_for_suspicious_urls(text)
+            flags.extend(f"suspicious_url:{kind}" for kind in suspicious_urls)
 
         if self._settings.pii_detection:
             pii_found = detect_pii(text)
